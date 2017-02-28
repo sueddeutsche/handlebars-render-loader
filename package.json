@@ -1,0 +1,27 @@
+{
+  "name": "sz-handlebars-render-loader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec",
+    "posttest": "npm run lint",
+    "lint": "eslint .; exit 0",
+    "jenkins-lint": "eslint -f checkstyle . > checkstyle-eslint.xml; exit 0"
+  },
+  "keywords": [],
+  "author": "szig-*",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "glob": "^7.0.5",
+    "handlebars": "^4.0.5",
+    "loader-utils": "^0.2.12",
+    "when": "^3.7.7"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.10.2",
+    "mocha": "^3.0.0"
+  }
+}
