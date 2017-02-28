@@ -19,6 +19,10 @@
     "loader-utils": "^0.2.12",
     "when": "^3.7.7"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sueddeutsche/handlebars-render-loader.git"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^3.10.2",

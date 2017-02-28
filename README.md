@@ -1,10 +1,12 @@
 # Handlebars Render Loader
 
+`npm install handlebars-render-loader --save-dev`
+
 Loads and compiles handlebars-files to html and returns it as a string. Additionally resolves and register all missing
 partials as a webpack-url (relative or absolute from a module). A missing partial must either be
     
-    - a relative path, starting with "./" or "../" or
-    - an absolute path within a module, which has no starting "/". i.e. {{> szig-frontend-toolkit/components/..}}
+- a relative path, starting with "./" or "../" or
+- an absolute path within a module, which has no starting "/". i.e. {{> szig-frontend-toolkit/components/..}}
 
 
 ## Usage
