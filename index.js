@@ -2,11 +2,21 @@
 const when = require("when");
 const chalk = require("chalk");
 const Handlebars = require("handlebars");
+const loaderUtils = require("loader-utils");
 const log = require("./lib/log");
 const partialsMap = require("./lib/partialsMap");
 const helpersMap = require("./lib/helpersMap");
 const findPartials = require("./lib/findPartials");
 
+function getLoaderConfig(context) {
+    const query = loaderUtils.getOptions(context) || {};
+    const configKey = query.config || "handlebarsRenderLoader";
+    const config = context.options && context.options.hasOwnProperty(configKey) ? context.options[configKey] : {};
+
+    delete query.config;
+
+    return Object.assign(query, config);
+}
 
 function handlebarsRenderLoader(content) {
     const loaderApi = this;
@@ -15,7 +25,7 @@ function handlebarsRenderLoader(content) {
         {
             helpers: {}
         },
-        loaderApi.options.handlebarsRenderLoader || {}
+        getLoaderConfig(this) || {}
     );
     const partialAliases = Object.keys(config.partialAliases || {});
     const partialAliasesPaths = config.partialAliases ? partialAliases.map((partialAlias) =>
