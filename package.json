@@ -11,12 +11,12 @@
   },
   "keywords": [],
   "author": "szig-*",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^1.1.1",
     "glob": "^7.0.5",
     "handlebars": "^4.0.5",
-    "loader-utils": "^0.2.12",
+    "loader-utils": "^1.0.2",
     "when": "^3.7.7"
   },
   "repository": {
@@ -30,6 +30,5 @@
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
-  },
-  "license": "MIT"
+  }
 }
