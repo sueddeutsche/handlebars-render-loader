@@ -10,7 +10,7 @@ const findPartials = require("./lib/findPartials");
 
 function logTime(enabled, task, start, end) {
     if (enabled) {
-        log(chalk.blue(`Handlebars-Loader: ${task}`), `${(end - start) / 1000}s`);
+        console.log(chalk.blue(`Handlebars-Loader: ${task}`), `${(end - start) / 1000}s`);
     }
 }
 
