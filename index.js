@@ -8,6 +8,12 @@ const partialsMap = require("./lib/partialsMap");
 const helpersMap = require("./lib/helpersMap");
 const findPartials = require("./lib/findPartials");
 
+function logTime(enabled, task, start, end) {
+    if (enabled) {
+        console.log(chalk.blue(`Handlebars-Loader: ${task}`), `${(end - start) / 1000}s`);
+    }
+}
+
 function getLoaderConfig(context) {
     const query = loaderUtils.getOptions(context) || {};
     const configKey = query.config || "handlebarsRenderLoader";
@@ -19,14 +25,20 @@ function getLoaderConfig(context) {
 }
 
 function handlebarsRenderLoader(content) {
+    const timeStart = Date.now();
+
     const loaderApi = this;
     const callback = loaderApi.async();
     const config = Object.assign(
         {
-            helpers: {}
+            helpers: {},
+            debug: false
         },
         getLoaderConfig(this) || {}
     );
+
+    log(config.debug, "Starting");
+
     const partialAliases = Object.keys(config.partialAliases || {});
     const partialAliasesPaths = config.partialAliases ? partialAliases.map((partialAlias) =>
         config.partialAliases[partialAlias]) : [];
@@ -47,6 +59,8 @@ function handlebarsRenderLoader(content) {
     }
 
     this.cacheable();
+
+    const timeStartPrepare = Date.now();
 
     when
         .all([
@@ -74,6 +88,9 @@ function handlebarsRenderLoader(content) {
             throw err;
         })
         .then(() => {
+            const timeStartSetup = Date.now();
+            logTime(config.debug, "preparation step (retrieving partials)", timeStartPrepare, timeStartSetup);
+
             // Now we should have a map with all partials and helpers. We need to add these as dependency
             // so that webpack's watch is working as expected.
             addDependencies();
@@ -100,6 +117,8 @@ function handlebarsRenderLoader(content) {
                 Handlebars.registerHelper(helperId, helper);
             });
             Object.keys(pMap).forEach((partialId) => Handlebars.registerPartial(partialId, pMap[partialId]));
+
+            logTime(config.debug, "setup handlebars", timeStartSetup, Date.now());
         })
         .then(() => {
             const partialsString = JSON.stringify(Object.keys(Handlebars.partials), null, 4);
@@ -118,10 +137,13 @@ function handlebarsRenderLoader(content) {
             }
         })
         .then(() => {
+            const startCompilation = Date.now();
             // build template
             var template = Handlebars.compile(content);
             // render html with given data
             var html = template(config.data);
+            logTime(config.debug, "compilation took", startCompilation, Date.now());
+            logTime(config.debug, "total time", timeStart, Date.now());
             callback(null, html);
         })
         .catch(callback);
