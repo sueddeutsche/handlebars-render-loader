@@ -32,7 +32,8 @@ function handlebarsRenderLoader(content) {
     const config = Object.assign(
         {
             helpers: {},
-            debug: false
+            debug: false,
+            profile: false
         },
         getLoaderConfig(this) || {}
     );
@@ -89,7 +90,7 @@ function handlebarsRenderLoader(content) {
         })
         .then(() => {
             const timeStartSetup = Date.now();
-            logTime(config.debug, "preparation step (retrieving partials)", timeStartPrepare, timeStartSetup);
+            logTime(config.profile, "preparation step (retrieving partials)", timeStartPrepare, timeStartSetup);
 
             // Now we should have a map with all partials and helpers. We need to add these as dependency
             // so that webpack's watch is working as expected.
@@ -118,13 +119,13 @@ function handlebarsRenderLoader(content) {
             });
             Object.keys(pMap).forEach((partialId) => Handlebars.registerPartial(partialId, pMap[partialId]));
 
-            logTime(config.debug, "setup handlebars", timeStartSetup, Date.now());
+            logTime(config.profile, "setup handlebars", timeStartSetup, Date.now());
         })
         .then(() => {
             const partialsString = JSON.stringify(Object.keys(Handlebars.partials), null, 4);
             const helpersString = JSON.stringify(Object.keys(Handlebars.helpers), null, 4);
-            log(config.debug, chalk.grey(`loaded Partials:\n ${partialsString}`));
-            log(config.debug, chalk.grey(`loaded Helpers:\n ${helpersString}`));
+            log(config.profile, chalk.grey(`loaded Partials:\n ${partialsString}`));
+            log(config.profile, chalk.grey(`loaded Helpers:\n ${helpersString}`));
         })
         .then(() => {
             if (config.onPartialsRegistered) {
@@ -142,8 +143,8 @@ function handlebarsRenderLoader(content) {
             var template = Handlebars.compile(content);
             // render html with given data
             var html = template(config.data);
-            logTime(config.debug, "compilation took", startCompilation, Date.now());
-            logTime(config.debug, "total time", timeStart, Date.now());
+            logTime(config.profile, "compilation took", startCompilation, Date.now());
+            logTime(config.profile, "total time", timeStart, Date.now());
             callback(null, html);
         })
         .catch(callback);
