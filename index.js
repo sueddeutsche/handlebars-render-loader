@@ -124,8 +124,8 @@ function handlebarsRenderLoader(content) {
         .then(() => {
             const partialsString = JSON.stringify(Object.keys(Handlebars.partials), null, 4);
             const helpersString = JSON.stringify(Object.keys(Handlebars.helpers), null, 4);
-            log(config.profile, chalk.grey(`loaded Partials:\n ${partialsString}`));
-            log(config.profile, chalk.grey(`loaded Helpers:\n ${helpersString}`));
+            log(config.debug, chalk.grey(`loaded Partials:\n ${partialsString}`));
+            log(config.debug, chalk.grey(`loaded Helpers:\n ${helpersString}`));
         })
         .then(() => {
             if (config.onPartialsRegistered) {

@@ -1,6 +1,6 @@
 {
   "name": "handlebars-render-loader",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Loads and compiles handlebars-files to html and returns it as a string",
   "main": "index.js",
   "scripts": {
